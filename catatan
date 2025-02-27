@@ -1,0 +1,10 @@
+jalankan seed 
+npx tsx prisma/seed.ts
+
+
+fitur root 
+hero
+Program KEAHLIAN
+APA YANG KAMI BERIKAN?
+list Ektrakurilurer
+KONTAK KAMI

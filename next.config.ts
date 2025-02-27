@@ -1,7 +1,10 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  reactStrictMode: true,
+  images: {
+    domains: ["placehold.co"], // Menambahkan placeholder.com ke daftar domain yang diperbolehkan
+  },
 };
 
 export default nextConfig;
