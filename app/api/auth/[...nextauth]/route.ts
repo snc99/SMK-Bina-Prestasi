@@ -89,7 +89,7 @@ export const authOptions: AuthOptions = {
         token.id = user.id;
         token.role = user.role;
         if (user.role === "student") {
-          token.nisn = user.nisn; // ✅ Tambahkan nisn ke token
+          token.nisn = user.nisn; 
         }
       }
       return token;
@@ -99,7 +99,7 @@ export const authOptions: AuthOptions = {
         session.user.id = token.id as string;
         session.user.role = token.role as "admin" | "student";
         if (token.role === "student") {
-          session.user.nisn = token.nisn as string; // ✅ Tambahkan nisn ke session
+          session.user.nisn = token.nisn as string;
         }
       }
       return session;

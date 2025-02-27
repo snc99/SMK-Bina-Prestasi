@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { usePathname } from "next/navigation"; // Menggunakan usePathname dari next/navigation
 import {
   AudioWaveform,
   BookOpen,
@@ -24,8 +25,8 @@ import {
 import { useSession } from "next-auth/react";
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
-  // 🔥 Perbaikan: Pindahkan useSession ke dalam komponen
   const { data: session } = useSession();
+  const pathname = usePathname(); // Menggunakan usePathname untuk mendapatkan path URL aktif
 
   const userData = {
     name: session?.user?.name || "Admin",
@@ -56,30 +57,29 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       title: "Dashboard",
       url: "#",
       icon: SquareTerminal,
-      isActive: true,
+      isActive: pathname === "/dashboard/admin/statistics", // Aktifkan jika URL sesuai
       items: [
         {
           title: "Statistik Pendaftaran",
-          url: "#",
-        },
-        {
-          title: "Ringkasan Status Pendaftar",
-          url: "#",
+          url: "/dashboard/admin/statistics",
         },
       ],
     },
     {
       title: "Pendaftaran",
-      url: "#",
+      url: "",
       icon: Bot,
+      isActive:
+        pathname.includes("/dashboard/admin/registrations") ||
+        pathname.includes("/dashboard/admin/verification"), // Cek apakah URL sesuai
       items: [
         {
           title: "List Pendaftar",
-          url: "#",
+          url: "/dashboard/admin/registrations",
         },
         {
           title: "Verifikasi Pendaftar",
-          url: "#",
+          url: "/dashboard/admin/verification",
         },
       ],
     },
@@ -87,14 +87,17 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       title: "Seleksi",
       url: "#",
       icon: BookOpen,
+      isActive:
+        pathname.includes("/dashboard/admin/manage-selection") ||
+        pathname.includes("/dashboard/admin/students-results"),
       items: [
         {
-          title: "Kelola Hasil Seleksi",
-          url: "#",
+          title: "Hasil Seleksi",
+          url: "/dashboard/admin/manage-selection",
         },
         {
-          title: "Data Siswa Lulus",
-          url: "#",
+          title: "Daftar Siswa Lulus",
+          url: "/dashboard/admin/students-results",
         },
       ],
     },
@@ -102,14 +105,17 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       title: "Laporan & Export",
       url: "#",
       icon: Settings2,
+      isActive:
+        pathname.includes("/dashboard/admin/export-pdf") ||
+        pathname.includes("/dashboard/admin/export-excel"),
       items: [
         {
           title: "Export ke PDF",
-          url: "#",
+          url: "/dashboard/admin/export-pdf",
         },
         {
           title: "Export ke Excel",
-          url: "#",
+          url: "/dashboard/admin/export-excel",
         },
       ],
     },

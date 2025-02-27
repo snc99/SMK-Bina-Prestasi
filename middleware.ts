@@ -6,8 +6,6 @@ export default withAuth(
   async function middleware(req) {
     const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
 
-    console.log("🟡 Token:", token);
-
     if (!token) {
       return NextResponse.redirect(new URL("/auth/login", req.url));
     }
@@ -17,12 +15,10 @@ export default withAuth(
       "/dashboard/students"
     );
 
-    // Blokir akses jika bukan admin mencoba mengakses halaman admin
     if (isAdminPage && token.role !== "admin") {
       return NextResponse.redirect(new URL("/dashboard/students", req.url));
     }
 
-    // Blokir akses jika admin mencoba mengakses halaman student
     if (isStudentPage && token.role === "admin") {
       return NextResponse.redirect(new URL("/dashboard/admin", req.url));
     }
