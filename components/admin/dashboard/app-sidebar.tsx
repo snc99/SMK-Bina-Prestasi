@@ -92,12 +92,12 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         pathname.includes("/dashboard/admin/students-results"),
       items: [
         {
-          title: "Hasil Seleksi",
-          url: "/dashboard/admin/selection-status",
+          title: "Daftar Seleksi Siswa",
+          url: "/dashboard/admin/students-results",
         },
         {
-          title: "Daftar Siswa Lulus",
-          url: "/dashboard/admin/students-results",
+          title: "Verifikasi Seleksi",
+          url: "/dashboard/admin/selection-status",
         },
       ],
     },
