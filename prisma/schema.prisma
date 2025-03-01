@@ -14,70 +14,70 @@ datasource db {
   url  	    = env("DATABASE_URL")
 }
 
-model Student {
-  id            String   @id @default(uuid())
-  name          String
-  nisn          String   @unique
-  ijazahNumber  String   @unique
-  schoolOrigin  String
-  major         String
-  phone         String
-  status        Status   @default(PENDING)
-  password      String   
-  selectionResult StatusSelection @default(PENDING) // Tambahkan ini
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
+  model Student {
+    id            String   @id @default(uuid())
+    name          String
+    nisn          String   @unique
+    ijazahNumber  String   @unique
+    schoolOrigin  String
+    major         String
+    phone         String
+    status        Status   @default(PENDING)
+    password      String   
+    selectionResult StatusSelection @default(PENDING) // Tambahkan ini
+    createdAt     DateTime @default(now())
+    updatedAt     DateTime @updatedAt
 
-  verification  Verification?
-  selection     Selection?
-}
-
-
-enum Status {
-  PENDING   // Baru mendaftar
-  VERIFIED  // Data sudah diverifikasi admin
-  REJECTED  // Data ditolak (misal NISN/Ijazah tidak valid)
-  PASSED    // Lulus seleksi
-  FAILED    // Tidak lulus seleksi
-}
-
-model Verification {
-  id        String   @id @default(uuid())
-  student   Student  @relation(fields: [studentId], references: [id])
-  studentId String   @unique
-  admin     Admin?   @relation(fields: [adminId], references: [id])
-  adminId   String?  // Bisa null kalau belum diverifikasi
-  note      String?  
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
-
-model Selection {
-  id        String   @id @default(uuid())
-  student   Student  @relation(fields: [studentId], references: [id])
-  studentId String   @unique
-  admin     Admin    @relation(fields: [adminId], references: [id])
-  adminId   String  // Harus ada admin
-  result    StatusSelection @default(PENDING)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
+    verification  Verification?
+    selection     Selection?
+  }
 
 
-enum StatusSelection {
-  PENDING   // Belum ditentukan
-  PASSED    // Lulus seleksi
-  FAILED    // Tidak lulus seleksi
-}
+  enum Status {
+    PENDING   // Baru mendaftar
+    VERIFIED  // Data sudah diverifikasi admin
+    REJECTED  // Data ditolak (misal NISN/Ijazah tidak valid)
+    PASSED    // Lulus seleksi
+    FAILED    // Tidak lulus seleksi
+  }
 
-model Admin {
-  id        String   @id @default(uuid())
-  name      String
-  email     String   @unique
-  password  String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  model Verification {
+    id        String   @id @default(uuid())
+    student   Student  @relation(fields: [studentId], references: [id])
+    studentId String   @unique
+    admin     Admin?   @relation(fields: [adminId], references: [id])
+    adminId   String?  // Bisa null kalau belum diverifikasi
+    note      String?  
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+  }
 
-  verifications Verification[]
-  selections    Selection[]
-}
+  model Selection {
+    id        String   @id @default(uuid())
+    student   Student  @relation(fields: [studentId], references: [id])
+    studentId String   @unique
+    admin     Admin    @relation(fields: [adminId], references: [id])
+    adminId   String  // Harus ada admin
+    result    StatusSelection @default(PENDING)
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+  }
+
+
+  enum StatusSelection {
+    PENDING   // Belum ditentukan
+    PASSED    // Lulus seleksi
+    FAILED    // Tidak lulus seleksi
+  }
+
+  model Admin {
+    id        String   @id @default(uuid())
+    name      String
+    email     String   @unique
+    password  String
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    verifications Verification[]
+    selections    Selection[]
+  }

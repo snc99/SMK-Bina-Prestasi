@@ -88,12 +88,12 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       url: "#",
       icon: BookOpen,
       isActive:
-        pathname.includes("/dashboard/admin/manage-selection") ||
+        pathname.includes("/dashboard/admin/selection-status") ||
         pathname.includes("/dashboard/admin/students-results"),
       items: [
         {
           title: "Hasil Seleksi",
-          url: "/dashboard/admin/manage-selection",
+          url: "/dashboard/admin/selection-status",
         },
         {
           title: "Daftar Siswa Lulus",
