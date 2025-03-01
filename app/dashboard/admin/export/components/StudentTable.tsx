@@ -10,26 +10,112 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { useStudents } from "../hooks/useStudents";
+import { jsPDF } from "jspdf";
+import * as XLSX from "xlsx";
 
 export default function StudentTable() {
-  const { passedStudents, failedStudents, pendingStudents, isLoading, isError } = useStudents();
+  const {
+    passedStudents,
+    failedStudents,
+    pendingStudents,
+    isLoading,
+    isError,
+  } = useStudents();
 
   // Gabungkan ketiga array siswa
-  const students = [
-    ...passedStudents,
-    ...failedStudents,
-    ...pendingStudents
-  ];
+  const students = [...passedStudents, ...failedStudents, ...pendingStudents];
+
+  // Fungsi untuk mengekspor data ke PDF
+  const generatePDF = () => {
+    const doc = new jsPDF("p", "mm", "a4");
+    doc.setFont("helvetica");
+
+    // Judul PDF
+    doc.setFontSize(18);
+    doc.text("Laporan Data Siswa", 105, 10, { align: "center" });
+
+    // Header Tabel
+    doc.setFontSize(8); // Mengurangi ukuran font header untuk memberi ruang lebih
+    doc.text("No", 20, 30);
+    doc.text("Nama", 30, 30);
+    doc.text("NISN", 70, 30); // Posisi NISN sedikit digeser ke kanan
+    doc.text("Nomor Ijazah", 95, 30);
+    doc.text("Jurusan", 125, 30); // Posisi Jurusan sedikit digeser ke kiri
+    doc.text("Nomor Telepon", 170, 30);
+    doc.text("Status Seleksi", 210, 30);
+
+    let y = 40; // Initial y-position for table rows
+
+    // Menambahkan data siswa ke dalam tabel
+    students.forEach((student: any, index: number) => {
+      doc.setFontSize(8); // Menggunakan ukuran font yang sedikit lebih kecil untuk data siswa
+      doc.text(String(index + 1), 20, y); // Nomor
+      doc.text(student.name, 30, y); // Nama
+      doc.text(student.nisn, 70, y); // NISN
+      doc.text(student.ijazahNumber, 95, y); // Nomor Ijazah
+      doc.text(student.major, 125, y); // Jurusan
+
+      // Nomor Telepon (Cek panjang teks, dan pastikan cukup ruang di kertas)
+      const phoneText = student.phone;
+      const statusText =
+        student.selectionResult === "PASSED"
+          ? "Lulus"
+          : student.selectionResult === "FAILED"
+          ? "Tidak Lulus"
+          : "Belum Ditentukan";
+
+      // Menyesuaikan posisi untuk nomor telepon dan status seleksi
+      // Membungkus teks agar tidak terpotong
+      doc.text(phoneText, 170, y, { maxWidth: 30 });
+      doc.text(statusText, 210, y, { maxWidth: 30 });
+
+      y += 10; // Move to the next line for the next student
+    });
+
+    // Simpan PDF
+    doc.save("laporan_data_siswa.pdf");
+  };
+
+  // Fungsi untuk mengekspor data ke Excel
+  const generateExcel = () => {
+    const worksheet = XLSX.utils.json_to_sheet(
+      students.map((student: any, index: number) => ({
+        No: index + 1,
+        Nama: student.name,
+        NISN: student.nisn,
+        "Nomor Ijazah": student.ijazahNumber,
+        Jurusan: student.major,
+        "Nomor Telepon": student.phone,
+        "Status Seleksi":
+          student.selectionResult === "PASSED"
+            ? "Lulus"
+            : student.selectionResult === "FAILED"
+            ? "Tidak Lulus"
+            : "Belum Ditentukan",
+      }))
+    );
+
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Data Siswa");
+
+    // Simpan file Excel
+    XLSX.writeFile(workbook, "laporan_data_siswa.xlsx");
+  };
 
   return (
     <div className="w-full overflow-x-auto">
       <div className="flex space-x-2 mb-5">
-        <Button className="bg-red-500 opacity-90 hover:bg-red-600" size="sm">
+        <Button
+          className="bg-red-500 opacity-90 hover:bg-red-600"
+          size="sm"
+          onClick={generatePDF} // Call generatePDF on button click
+        >
           Export PDF
         </Button>
         <Button
           className="bg-green-500 opacity-90 hover:bg-green-600"
           size="sm"
+          onClick={generateExcel} // Call generateExcel on button click
         >
           Export Excel
         </Button>
@@ -52,14 +138,14 @@ export default function StudentTable() {
           <TableBody>
             {isLoading ? (
               <TableRow>
-                <TableCell colSpan={6} className="text-center text-xs">
+                <TableCell colSpan={7} className="text-center text-xs">
                   Loading...
                 </TableCell>
               </TableRow>
             ) : isError ? (
               <TableRow>
                 <TableCell
-                  colSpan={6}
+                  colSpan={7}
                   className="text-center text-xs text-red-500"
                 >
                   Terjadi kesalahan saat mengambil data.
@@ -89,7 +175,7 @@ export default function StudentTable() {
               ))
             ) : (
               <TableRow>
-                <TableCell colSpan={6} className="text-center text-xs">
+                <TableCell colSpan={7} className="text-center text-xs">
                   Tidak ada data siswa.
                 </TableCell>
               </TableRow>
