@@ -1,0 +1,70 @@
+jalankan seed 
+npx tsx prisma/seed.ts
+
+
+fitur root 
+hero
+Program KEAHLIAN
+APA YANG KAMI BERIKAN?
+list Ektrakurilurer
+KONTAK KAMI
+
+Penjelasan Field:
+
+No: Nomor urut pendaftar.
+Nama: Nama lengkap siswa.
+NISN: Nomor Induk Siswa Nasional (unik).
+Nomor Ijazah: Nomor Ijazah siswa (unik).
+Asal Sekolah: Nama sekolah asal siswa.
+Jurusan: Jurusan yang dipilih oleh siswa.
+Status Pendaftaran: Status pendaftaran, apakah Terverifikasi, Ditolak, atau Pendaftaran Baru.
+Status Seleksi: Status seleksi siswa, apakah Lulus atau Tidak Lulus.
+Aksi: Tombol untuk verifikasi atau update hasil seleksi.
+
+Fitur yang bisa diterapkan pada tabel:
+Tombol Aksi: Admin bisa memilih untuk memverifikasi data atau menandai hasil seleksi langsung dari tabel.
+Pencarian dan Penyaringan: Admin bisa mencari pendaftar berdasarkan NISN atau status.
+Sortir: Admin bisa menyortir pendaftar berdasarkan status pendaftaran atau status seleksi.
+Tindakan dari tabel ini:
+Admin bisa mengklik Verifikasi untuk memverifikasi data berdasarkan NISN dan nomor ijazah.
+Admin bisa mengklik Menandai Lulus/Tidak Lulus setelah tes offline selesai.
+
+====================================================================================================================================================
+
+Fitur Verifikasi Pendaftar
+
+Admin melihat daftar pendaftar: Admin bisa melihat tabel daftar pendaftar yang belum diverifikasi.
+Verifikasi Pendaftar: Admin memilih pendaftar dan memeriksa data NISN atau nomor ijazah untuk memastikan kevalidannya.
+Jika valid, status pendaftaran diubah menjadi Terverifikasi.
+Jika tidak valid, status pendaftaran diubah menjadi Ditolak, dan admin bisa memberikan catatan/penjelasan.
+Pengelolaan status: Admin dapat memperbarui status seleksi siswa setelah tes offline, menandai siswa sebagai Lulus atau Tidak Lulus.
+Proses Verifikasi:
+Admin membuka halaman Verifikasi Pendaftar.
+Daftar pendaftar yang belum diverifikasi ditampilkan.
+Admin dapat memilih pendaftar, memverifikasi dengan data yang ada, lalu mengubah status mereka.
+Jika verifikasi berhasil, status pendaftar akan berubah menjadi Terverifikasi.
+Jika gagal, status menjadi Ditolak dan admin dapat menambahkan catatan.
+
+==================================================
+
+Fungsi Admin di Kelola Hasil Seleksi:
+Menandai Hasil Seleksi:
+Admin akan melihat daftar siswa yang telah mengikuti seleksi.
+Untuk setiap siswa, admin dapat menandai status kelulusan, seperti:
+Lulus: Menandakan siswa berhasil dalam seleksi.
+Tidak Lulus: Menandakan siswa tidak lulus seleksi.
+Admin akan memilih hasil ini setelah tes offline selesai.
+Penyajian Data:
+Tabel dengan Informasi Siswa dan Status Seleksi:
+Nama siswa
+NISN
+Jurusan pilihan
+Status seleksi (Lulus atau Tidak Lulus)
+Catatan tambahan (jika diperlukan)
+Tombol untuk mengubah status (Lulus/Tidak Lulus).
+Tampilan dan Aksi:
+Tabel yang menampilkan siswa yang perlu ditandai hasil seleksinya.
+Setiap baris dapat memiliki dua opsi tombol aksi:
+Lulus: Menandai siswa lulus seleksi.
+Tidak Lulus: Menandai siswa tidak lulus seleksi.
+Admin dapat menambahkan catatan jika diperlukan untuk siswa yang ditolak atau tidak lulus.
