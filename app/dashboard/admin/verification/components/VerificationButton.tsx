@@ -30,15 +30,14 @@ export default function VerificationButton({
       if (res.ok) {
         toast.success(data.message);
 
-        // **Optimistic UI: Hapus dari cache sementara tanpa menunggu API**
         mutate(
           "/api/students/unverified",
           (currentData: any[] | undefined) =>
             (currentData || []).filter((student) => student.id !== id),
-          false // Tidak langsung fetch ulang, biarkan cache berubah dulu
+
+          false
         );
 
-        // **Fetch ulang untuk memastikan data akurat**
         mutate("/api/students/unverified");
       } else {
         toast.error(data.message);

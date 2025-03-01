@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 "use client";
 
 import { Button } from "@/components/ui/button";
@@ -116,6 +117,15 @@ export default function StudentsResults() {
           </TableBody>
         </Table>
       </div>
+=======
+import StudentTable from "./components/StudenTable";
+
+export default function StudentResult() {
+  return (
+    <div className="p-6">
+      <h1 className="text-2xl font-bold mb-4">Daftar Siswa Lulus</h1>
+      <StudentTable />
+>>>>>>> ce818b8ce937d92817982cf7c85f66f47e14cdee
     </div>
   );
 }
