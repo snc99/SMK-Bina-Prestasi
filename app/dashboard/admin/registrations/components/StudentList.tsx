@@ -1,6 +1,6 @@
 "use client";
 
-import { useStudents } from "../actions/useStudents";
+import { useStudents } from "../hooks/useStudents";
 import StudentTable from "./StudentTable";
 
 export default function StudentList() {

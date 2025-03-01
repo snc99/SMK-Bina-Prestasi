@@ -1,12 +1,11 @@
 import useSWR from "swr";
-import { Student } from "@prisma/client"; // Pastikan `Student` diimport dari Prisma
+import { Student } from "@prisma/client";
 
 export function useVerifyStudent() {
-  const { mutate } = useSWR<Student[]>("/api/students/unverified"); // Menentukan tipe data
+  const { mutate } = useSWR<Student[]>("/api/students/unverified");
 
   const verifyStudent = async (id: string) => {
     try {
-      // Optimistic Update: Update UI sebelum request selesai
       await mutate(
         async (currentData: Student[] | undefined) => {
           const res = await fetch("/api/students/verify", {
@@ -17,7 +16,6 @@ export function useVerifyStudent() {
 
           if (!res.ok) throw new Error("Gagal memverifikasi siswa");
 
-          // Hapus siswa yang sudah diverifikasi dari daftar "unverified"
           return currentData?.filter((student) => student.id !== id) || [];
         },
         { revalidate: true }

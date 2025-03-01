@@ -15,9 +15,9 @@ export function useUnverifiedStudents() {
     "/api/students/unverified",
     fetcher,
     {
-      revalidateOnFocus: true, // Pastikan data selalu update saat kembali ke halaman
-      refreshInterval: 5000, // Fetch data otomatis setiap 5 detik
-      keepPreviousData: true, // Mencegah loading state saat data berubah
+      revalidateOnFocus: true,
+      refreshInterval: 5000,
+      keepPreviousData: true,
     }
   );
 
@@ -26,6 +26,6 @@ export function useUnverifiedStudents() {
     isLoading: !data && !error,
     isError: !!error,
     isValidating,
-    refresh: () => mutate("/api/students/unverified"), // Untuk re-fetch manual
+    refresh: () => mutate("/api/students/unverified"),
   };
 }

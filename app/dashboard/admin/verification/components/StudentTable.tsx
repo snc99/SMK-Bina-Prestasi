@@ -8,7 +8,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { useUnverifiedStudents } from "../actions/fetchUnverified";
+import { useUnverifiedStudents } from "../hooks/fetchUnverified";
 import VerificationButton from "./VerificationButton";
 
 interface VerificationButtonProps {

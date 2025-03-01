@@ -9,7 +9,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import SelectionButton from "./SelectionButton";
-import { useStudents } from "../actions/useStudents";
+import { useStudents } from "../hooks/useStudents";
 
 export default function StudentTable() {
   const { students, isLoading, isError } = useStudents();

@@ -102,20 +102,20 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       ],
     },
     {
-      title: "Laporan & Export",
+      title: "Export & Laporan",
       url: "#",
       icon: Settings2,
       isActive:
-        pathname.includes("/dashboard/admin/export-pdf") ||
-        pathname.includes("/dashboard/admin/export-excel"),
+        pathname.includes("/dashboard/admin/export") ||
+        pathname.includes("/dashboard/admin/report"),
       items: [
         {
-          title: "Export ke PDF",
-          url: "/dashboard/admin/export-pdf",
+          title: "Export",
+          url: "/dashboard/admin/export",
         },
         {
-          title: "Export ke Excel",
-          url: "/dashboard/admin/export-excel",
+          title: "Report",
+          url: "/dashboard/admin/report",
         },
       ],
     },

@@ -8,7 +8,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { useStudents } from "../actions/useStudents";
+import { useStudents } from "../hooks/useStudents";
 
 export default function StudentTable() {
   const { students, isLoading, isError } = useStudents();
