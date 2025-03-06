@@ -1,3 +1,5 @@
-export default function Layout({ children }: { children: React.ReactNode }) {
-    return <>{children}</>;
+import React from "react";
+
+export default function ExportExcel() {
+  return <div>Export Excel</div>;
 }
