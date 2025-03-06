@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
 
 export default function LoginPage() {
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
   const router = useRouter();
   const [error, setError] = useState("");
   const [role, setRole] = useState<"admin" | "student">("admin");
@@ -21,16 +21,28 @@ export default function LoginPage() {
   // State untuk login Student
   const [nisn, setNisn] = useState("");
 
-  // Jika sudah login, redirect ke dashboard sesuai role
+  // 🔹 Jika sudah login, redirect ke dashboard tanpa merender halaman login
   useEffect(() => {
-    if (session?.user?.role) {
+    if (status === "authenticated" && session?.user?.role) {
       router.replace(
         session.user.role === "admin"
           ? "/dashboard/admin"
           : "/dashboard/students"
       );
     }
-  }, [session, router]);
+  }, [status, session, router]);
+
+  // 🔹 Tampilkan loading spinner jika session sedang dicek
+  if (
+    status === "loading" ||
+    (status === "authenticated" && session?.user?.role)
+  ) {
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <Loader2 className="w-10 h-10 animate-spin" />
+      </div>
+    );
+  }
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -44,7 +56,7 @@ export default function LoginPage() {
 
     const res = await signIn(role === "admin" ? "credentials" : "student", {
       ...credentials,
-      redirect: false,
+      redirect: false, // Jangan redirect otomatis dari NextAuth
     });
 
     console.log("Response from signIn:", res); // 🔍 Debugging
@@ -53,11 +65,9 @@ export default function LoginPage() {
       setError("Login gagal. Periksa kembali data yang dimasukkan!");
       setLoading(false);
     } else {
-      setTimeout(() => {
-        router.push(
-          role === "admin" ? "/dashboard/admin" : "/dashboard/students"
-        );
-      }, 500);
+      router.replace(
+        role === "admin" ? "/dashboard/admin" : "/dashboard/students"
+      );
     }
   };
 
@@ -93,30 +103,26 @@ export default function LoginPage() {
         </div>
 
         {role === "admin" ? (
-          <>
-            <Input
-              type="email"
-              placeholder="Email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-              disabled={loading}
-            />
-          </>
+          <Input
+            type="email"
+            placeholder="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+            disabled={loading}
+          />
         ) : (
-          <>
-            <Input
-              type="text"
-              placeholder="NISN"
-              value={nisn}
-              onChange={(e) => setNisn(e.target.value)}
-              required
-              disabled={loading}
-            />
-          </>
+          <Input
+            type="text"
+            placeholder="NISN"
+            value={nisn}
+            onChange={(e) => setNisn(e.target.value)}
+            required
+            disabled={loading}
+          />
         )}
 
-        {/* Input Password (Digunakan oleh Admin & Siswa) */}
+        {/* Input Password */}
         <Input
           type="password"
           placeholder="Password"

@@ -2,24 +2,14 @@
 
 import * as React from "react";
 import { usePathname } from "next/navigation"; // Menggunakan usePathname dari next/navigation
-import {
-  AudioWaveform,
-  BookOpen,
-  Bot,
-  Command,
-  GalleryVerticalEnd,
-  Settings2,
-  SquareTerminal,
-} from "lucide-react";
+import { BookOpen, Bot, Settings2, SquareTerminal } from "lucide-react";
 
 import { NavMain } from "@/components/admin/dashboard/nav-main";
 import { NavUser } from "@/components/admin/dashboard/nav-user";
-import { TeamSwitcher } from "@/components/admin/dashboard/team-switcher";
 import {
   Sidebar,
   SidebarContent,
   SidebarFooter,
-  SidebarHeader,
   SidebarRail,
 } from "@/components/ui/sidebar";
 import { useSession } from "next-auth/react";
@@ -34,36 +24,12 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
     avatar: "/avatars/default.jpg",
   };
 
-  const teams = [
-    {
-      name: "Acme Inc",
-      logo: GalleryVerticalEnd,
-      plan: "Enterprise",
-    },
-    {
-      name: "Acme Corp.",
-      logo: AudioWaveform,
-      plan: "Startup",
-    },
-    {
-      name: "Evil Corp.",
-      logo: Command,
-      plan: "Free",
-    },
-  ];
-
   const navMain = [
     {
       title: "Dashboard",
-      url: "#",
+      url: "/dashboard/admin",
       icon: SquareTerminal,
-      isActive: pathname === "/dashboard/admin/statistics", // Aktifkan jika URL sesuai
-      items: [
-        {
-          title: "Statistik Pendaftaran",
-          url: "/dashboard/admin/statistics",
-        },
-      ],
+      isActive: pathname === "/dashboard/admin",
     },
     {
       title: "Pendaftaran",
@@ -71,7 +37,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       icon: Bot,
       isActive:
         pathname.includes("/dashboard/admin/registrations") ||
-        pathname.includes("/dashboard/admin/verification"), // Cek apakah URL sesuai
+        pathname.includes("/dashboard/admin/verification"),
       items: [
         {
           title: "List Pendaftar",
@@ -123,9 +89,6 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 
   return (
     <Sidebar collapsible="icon" {...props}>
-      <SidebarHeader>
-        <TeamSwitcher teams={teams} />
-      </SidebarHeader>
       <SidebarContent>
         <NavMain items={navMain} />
       </SidebarContent>

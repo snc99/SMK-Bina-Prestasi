@@ -1,7 +1,9 @@
 import NextAuth, { AuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-import { prisma } from "@/lib/prisma";
-import { verifyPassword } from "@/lib/hash";
+import { PrismaClient } from "@prisma/client";
+import bcrypt from "bcrypt";
+
+const prisma = new PrismaClient();
 
 export const authOptions: AuthOptions = {
   providers: [
@@ -24,7 +26,7 @@ export const authOptions: AuthOptions = {
           throw new Error("Akun tidak ditemukan!");
         }
 
-        const isValid = await verifyPassword(
+        const isValid = await bcrypt.compare(
           credentials.password,
           admin.password
         );
@@ -62,7 +64,11 @@ export const authOptions: AuthOptions = {
           throw new Error("Akun belum diverifikasi oleh admin!");
         }
 
-        const isValid = await verifyPassword(
+        if (!student.password) {
+          throw new Error("Akun ini tidak memiliki password!");
+        }
+
+        const isValid = await bcrypt.compare(
           credentials.password,
           student.password
         );
@@ -82,14 +88,14 @@ export const authOptions: AuthOptions = {
   session: {
     strategy: "jwt",
   },
-  secret: process.env.NEXTAUTH_SECRET,
+  secret: process.env.NEXTAUTH_SECRET || "default_secret",
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
         token.id = user.id;
         token.role = user.role;
         if (user.role === "student") {
-          token.nisn = user.nisn; 
+          token.nisn = user.nisn;
         }
       }
       return token;
@@ -105,7 +111,6 @@ export const authOptions: AuthOptions = {
       return session;
     },
   },
-
   pages: {
     signIn: "/auth/login",
   },
