@@ -1,4 +1,3 @@
-import { authOptions } from "@/lib/auth";
 import { AppSidebar } from "@/components/student/dashboard/app-sidebar";
 import {
   Breadcrumb,
@@ -15,6 +14,7 @@ import {
   SidebarTrigger,
 } from "@/components/ui/sidebar";
 import { getServerSession } from "next-auth";
+import { authOptions } from "@/lib/auth";
 
 export default async function DashboardStudent() {
   const session = await getServerSession(authOptions);

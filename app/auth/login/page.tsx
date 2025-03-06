@@ -23,14 +23,16 @@ export default function LoginPage() {
 
   // 🔹 Jika sudah login, redirect ke dashboard tanpa merender halaman login
   useEffect(() => {
-    if (status === "authenticated" && session?.user?.role) {
-      router.replace(
+    if (status === "authenticated") {
+      console.log("✅ User is authenticated. Session:", session);
+      const redirectUrl =
         session.user.role === "admin"
           ? "/dashboard/admin"
-          : "/dashboard/students"
-      );
+          : "/dashboard/students";
+      console.log("🔀 Redirecting to:", redirectUrl);
+      router.replace(redirectUrl);
     }
-  }, [status, session, router]);
+  }, [session, status, router]);
 
   // 🔹 Tampilkan loading spinner jika session sedang dicek
   if (
@@ -52,22 +54,30 @@ export default function LoginPage() {
     const credentials =
       role === "admin" ? { email, password } : { nisn, password };
 
-    console.log("Sending credentials:", credentials); // 🔍 Debugging
+    console.log("🔍 Sending credentials:", credentials); // 🔍 Debugging
 
-    const res = await signIn(role === "admin" ? "credentials" : "student", {
-      ...credentials,
-      redirect: false, // Jangan redirect otomatis dari NextAuth
-    });
+    try {
+      const res = await signIn(role === "admin" ? "credentials" : "student", {
+        ...credentials,
+        redirect: false, // Jangan redirect otomatis dari NextAuth
+      });
 
-    console.log("Response from signIn:", res); // 🔍 Debugging
+      console.log("🔑 Response from signIn:", res); // 🔍 Debugging
 
-    if (res?.error) {
-      setError("Login gagal. Periksa kembali data yang dimasukkan!");
+      if (res?.error) {
+        console.error("⛔ Login error:", res.error);
+        setError("Login gagal. Periksa kembali data yang dimasukkan!");
+      } else {
+        console.log("✅ Login successful. Redirecting...");
+        router.replace(
+          role === "admin" ? "/dashboard/admin" : "/dashboard/students"
+        );
+      }
+    } catch (error) {
+      console.error("⛔ Unexpected error during login:", error);
+      setError("Terjadi kesalahan saat login. Silakan coba lagi.");
+    } finally {
       setLoading(false);
-    } else {
-      router.replace(
-        role === "admin" ? "/dashboard/admin" : "/dashboard/students"
-      );
     }
   };
 
