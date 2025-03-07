@@ -4,6 +4,15 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { SessionProvider } from "next-auth/react";
 import { metadata } from "@/components/landing/MetaData";
+import { Poppins } from 'next/font/google';
+
+
+const poppins = Poppins({
+  subsets: ['latin'], // Sesuaikan subset jika perlu
+  weight: ['400', '700'], // Tambahkan varian font yang dibutuhkan
+  style: ['normal', 'italic'], // (Opsional) Kalau butuh italic juga
+  display: 'swap', // Supaya font langsung ditampilkan saat loading
+});
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -32,7 +41,7 @@ export default function RootLayout({
       </head>
 
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${poppins.className} ${poppins.className} antialiased`}
       >
         <SessionProvider>{children}</SessionProvider>
       </body>
