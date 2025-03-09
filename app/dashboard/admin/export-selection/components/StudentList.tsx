@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { jsPDF } from "jspdf";
 import * as XLSX from "xlsx";
 import ErrorServer from "@/components/error-handling/ErrorServer";
+import autoTable from "jspdf-autotable";
 
 export default function StudentList() {
   const {
@@ -26,29 +27,52 @@ export default function StudentList() {
     const doc = new jsPDF("p", "mm", "a4");
     doc.setFont("helvetica");
     doc.setFontSize(18);
-    doc.text("Laporan Data Siswa", 105, 10, { align: "center" });
-    doc.setFontSize(8);
-    let y = 40;
-    students.forEach((student: any, index: number) => {
-      doc.text(String(index + 1), 20, y);
-      doc.text(student.name, 30, y);
-      doc.text(student.nisn, 70, y);
-      doc.text(student.ijazahNumber, 95, y);
-      doc.text(student.major, 125, y);
-      doc.text(student.phone, 170, y, { maxWidth: 30 });
-      doc.text(
-        student.selectionResult === "PASSED"
-          ? "Lulus"
-          : student.selectionResult === "FAILED"
-          ? "Tidak Lulus"
-          : "Belum Ditentukan",
-        210,
-        y,
-        { maxWidth: 30 }
-      );
-      y += 10;
+    doc.text("Laporan Data Seleksi Siswa", 105, 10, { align: "center" });
+
+    // Data untuk tabel
+    const tableData = students.map((student: any, index: number) => [
+      index + 1,
+      student.name,
+      student.nisn,
+      student.ijazahNumber,
+      student.major,
+      student.phone,
+      student.selectionResult === "PASSED"
+        ? "Lulus"
+        : student.selectionResult === "FAILED"
+        ? "Tidak Lulus"
+        : "Belum Ditentukan",
+    ]);
+
+    // Header kolom tabel
+    const tableHeaders = [
+      "No",
+      "Nama",
+      "NISN",
+      "Nomor Ijazah",
+      "Jurusan",
+      "No Telepon",
+      "Status Seleksi",
+    ];
+
+    // Generate tabel dengan autoTable
+    autoTable(doc, {
+      head: [tableHeaders],
+      body: tableData,
+      startY: 20,
+      styles: { fontSize: 8, cellPadding: 2 },
+      columnStyles: {
+        0: { cellWidth: 10 }, // No
+        1: { cellWidth: 40 }, // Nama
+        2: { cellWidth: 25 }, // NISN
+        3: { cellWidth: 30 }, // Nomor Ijazah
+        4: { cellWidth: 30 }, // Jurusan
+        5: { cellWidth: 30 }, // No Telepon
+        6: { cellWidth: 25 }, // Status Seleksi
+      },
     });
-    doc.save("laporan_data_siswa.pdf");
+
+    doc.save("laporan_data_seleksi_siswa.pdf");
   };
 
   // Fungsi untuk export Excel
@@ -70,8 +94,8 @@ export default function StudentList() {
       }))
     );
     const workbook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(workbook, worksheet, "Data Siswa");
-    XLSX.writeFile(workbook, "laporan_data_siswa.xlsx");
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Data Seleksi Siswa");
+    XLSX.writeFile(workbook, "laporan_data_seleksi_siswa.xlsx");
   };
 
   if (isLoading) return <Loading />;

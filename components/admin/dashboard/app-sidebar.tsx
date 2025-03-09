@@ -68,7 +68,25 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       ],
     },
     {
-      title: "Export & Laporan",
+      title: "Export",
+      url: "#",
+      icon: Settings2,
+      isActive:
+        pathname.includes("/dashboard/admin/export-registration") ||
+        pathname.includes("/dashboard/admin/export-selection"),
+      items: [
+        {
+          title: "Export Pendaftaran",
+          url: "/dashboard/admin/export-registration",
+        },
+        {
+          title: "Export Seleksi",
+          url: "/dashboard/admin/export-selection",
+        },
+      ],
+    },
+    {
+      title: "Laporan",
       url: "#",
       icon: Settings2,
       isActive:
@@ -76,11 +94,11 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         pathname.includes("/dashboard/admin/report"),
       items: [
         {
-          title: "Export",
+          title: "Laporan Pendaftaran",
           url: "/dashboard/admin/export",
         },
         {
-          title: "Report",
+          title: "Laporan Seleksi",
           url: "/dashboard/admin/report",
         },
       ],

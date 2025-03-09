@@ -5,7 +5,7 @@ import { getStudents } from "../actions/fetchStudent";
 
 export const useStudents = () => {
   const { data, error, isLoading } = useSWR(
-    "/api/admin/export",
+    "/api/admin/export-selection",
     getStudents
   );
 
