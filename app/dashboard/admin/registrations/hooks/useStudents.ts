@@ -11,7 +11,7 @@ const fetcher = async (url: string): Promise<Student[]> => {
 
 export function useStudents() {
   const { data, error, mutate } = useSWR<Student[]>(
-    `${process.env.NEXT_PUBLIC_API_URL}/students/list`,
+    `${process.env.NEXT_PUBLIC_API_URL}/admin/list`,
     fetcher
   );
 

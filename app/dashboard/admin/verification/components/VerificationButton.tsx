@@ -18,7 +18,7 @@ export default function VerificationButton({
 
     try {
       const endpoint =
-        action === "verify" ? "/api/students/verify" : "/api/students/reject";
+        action === "verify" ? "/api/admin/verify" : "/api/admin/reject";
 
       const res = await fetch(endpoint, {
         method: "POST",
@@ -31,14 +31,14 @@ export default function VerificationButton({
         toast.success(data.message);
 
         mutate(
-          "/api/students/unverified",
+          "/api/admin/unverified",
           (currentData: any[] | undefined) =>
             (currentData || []).filter((student) => student.id !== id),
 
           false
         );
 
-        mutate("/api/students/unverified");
+        mutate("/api/admin/unverified");
       } else {
         toast.error(data.message);
       }

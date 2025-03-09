@@ -1,21 +1,21 @@
 "use server";
 
+const REVERSE_STATUS_MAP = {
+  LULUS: "PASSED",
+  "TIDAK LULUS": "FAILED",
+} as const;
+
 export async function updateSelectionStatus(
   id: string,
-  status: "LULUS" | "TIDAK LULUS"
+  status: keyof typeof REVERSE_STATUS_MAP
 ) {
   try {
-    const statusMap = {
-      LULUS: "PASSED",
-      "TIDAK LULUS": "FAILED",
-    } as const;
-
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/students/selection-status`,
+      `${process.env.NEXT_PUBLIC_API_URL}/admin/selection-status`,
       {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ id, status: statusMap[status] }),
+        body: JSON.stringify({ id, status: REVERSE_STATUS_MAP[status] }),
       }
     );
 
@@ -27,25 +27,5 @@ export async function updateSelectionStatus(
   } catch (error) {
     console.error("Error updating selection status:", error);
     return { error: "Terjadi kesalahan saat memperbarui status seleksi." };
-  }
-}
-
-export async function getStudents() {
-  try {
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/students/selection-status`,
-      {
-        cache: "no-store",
-      }
-    );
-
-    if (!res.ok) {
-      throw new Error("Gagal mengambil data pendaftar.");
-    }
-
-    return await res.json();
-  } catch (error) {
-    console.error("Error fetching students:", error);
-    return { students: [] };
   }
 }

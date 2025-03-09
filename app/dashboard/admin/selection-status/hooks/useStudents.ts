@@ -1,21 +1,17 @@
-"use client";
-
 import useSWR from "swr";
-import { getStudents } from "../actions/fetchStudents";
 
-export const useStudents = () => {
-  const {
-    data: students,
-    error,
-    isLoading,
-  } = useSWR("/api/students", async () => {
-    const data = await getStudents();
-    return data.students;
-  });
+const fetcher = (url: string) => fetch(url).then((res) => res.json());
+
+export function useStudents() {
+  const { data, error, mutate } = useSWR(
+    `${process.env.NEXT_PUBLIC_API_URL}/admin/selection-status`,
+    fetcher
+  );
 
   return {
-    students: students || [],
-    isLoading,
+    students: data?.students || [],
+    isLoading: !data && !error,
     isError: error,
+    mutate,
   };
-};
+}

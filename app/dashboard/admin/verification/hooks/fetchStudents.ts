@@ -8,7 +8,7 @@ const fetcher = async (url: string) => {
 
 export function useStudents() {
   const { data, error, isLoading, mutate } = useSWR(
-    "/api/students/list",
+    "/api/admin/list",
     fetcher
   );
 

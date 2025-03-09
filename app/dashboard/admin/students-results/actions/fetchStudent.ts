@@ -1,7 +1,7 @@
 export async function getStudents() {
   try {
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/students/student-result`,
+      `${process.env.NEXT_PUBLIC_API_URL}/admin/students-result`,
       {
         cache: "no-store",
       }

@@ -8,7 +8,7 @@ export const useStudents = () => {
     data: students,
     error,
     isLoading,
-  } = useSWR("/api/students/student-result", async () => {
+  } = useSWR("/api/admin/students-result", async () => {
     const data = await getStudents();
     return data.students;
   });

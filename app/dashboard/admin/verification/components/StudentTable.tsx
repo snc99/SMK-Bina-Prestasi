@@ -10,6 +10,8 @@ import {
 } from "@/components/ui/table";
 import { useUnverifiedStudents } from "../hooks/fetchUnverified";
 import VerificationButton from "./VerificationButton";
+import Loading from "@/components/loading/Loading";
+import ErrorServer from "@/components/error-handling/ErrorServer";
 
 interface VerificationButtonProps {
   id: string;
@@ -19,8 +21,8 @@ interface VerificationButtonProps {
 export default function StudentTable() {
   const { students, isLoading, isError } = useUnverifiedStudents();
 
-  if (isLoading) return <p>Loading...</p>;
-  if (isError) return <p>Error loading data.</p>;
+  if (isLoading) return <Loading />;
+  if (isError) return <ErrorServer />;
 
   return (
     <div className="w-full overflow-x-auto">

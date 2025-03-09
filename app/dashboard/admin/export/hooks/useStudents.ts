@@ -5,18 +5,17 @@ import { getStudents } from "../actions/fetchStudent";
 
 export const useStudents = () => {
   const { data, error, isLoading } = useSWR(
-    "/api/students/export",
-    async () => {
-      const data = await getStudents();
-      return data; // Now returning the entire response object
-    }
+    "/api/admin/export",
+    getStudents
   );
 
   return {
-    passedStudents: data?.passedStudents || [], // Accessing passedStudents directly
-    failedStudents: data?.failedStudents || [], // Accessing failedStudents directly
-    pendingStudents: data?.pendingStudents || [], // Accessing pendingStudents directly
+    passedStudents: data?.passedStudents || [],
+    failedStudents: data?.failedStudents || [],
+    pendingStudents: data?.pendingStudents || [],
     isLoading,
-    isError: error,
+    isError: !!error,
   };
 };
+
+export default useStudents;

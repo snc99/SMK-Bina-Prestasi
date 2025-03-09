@@ -12,7 +12,7 @@ const fetcher = async (url: string): Promise<Student[]> => {
 
 export function useUnverifiedStudents() {
   const { data, error, isValidating } = useSWR<Student[]>(
-    "/api/students/unverified",
+    "/api/admin/unverified",
     fetcher,
     {
       revalidateOnFocus: true,
