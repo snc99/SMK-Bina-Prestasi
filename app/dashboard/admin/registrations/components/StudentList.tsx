@@ -1,18 +1,15 @@
 "use client";
 
-import { useEffect } from "react";
 import { useStudents } from "../hooks/useStudents";
 import StudentTable from "./StudentTable";
 import ErrorServer from "@/components/error-handling/ErrorServer";
 import Loading from "@/components/loading/Loading";
 
 export default function StudentList() {
-  const { students, isLoading, isError } = useStudents();
+  const { students, loading, error } = useStudents(); // Sesuaikan dengan hook
 
-  useEffect(() => {}, [students]);
-
-  if (isError) return <ErrorServer />;
-  if (isLoading) return <Loading />;
+  if (error) return <ErrorServer />;
+  if (loading) return <Loading />;
 
   return (
     <div className="w-full overflow-x-auto">

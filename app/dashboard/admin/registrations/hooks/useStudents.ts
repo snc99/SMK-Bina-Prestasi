@@ -1,24 +1,39 @@
-"use client";
+import { useState, useEffect } from "react";
+import { fetchStudents } from "../actions/fetchStudents";
 
-import useSWR from "swr";
-import { Student } from "@prisma/client";
+// Interface untuk data siswa
+interface Student {
+  id: string;
+  name: string;
+  nisn: string;
+  ijazahNumber: string;
+  schoolOrigin: string;
+  major: string;
+  phone: string;
+  status: string;
+}
 
-const fetcher = async (url: string): Promise<Student[]> => {
-  const res = await fetch(url);
-  if (!res.ok) throw new Error("Gagal mengambil data");
-  return res.json();
-};
-
+// Custom hook untuk mengambil data siswa
 export function useStudents() {
-  const { data, error, mutate } = useSWR<Student[]>(
-    `${process.env.NEXT_PUBLIC_API_URL}/admin/list`,
-    fetcher
-  );
+  const [students, setStudents] = useState<Student[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
 
-  return {
-    students: data || [],
-    isLoading: !error && !data,
-    isError: error,
-    mutate,
-  };
+  useEffect(() => {
+    async function getStudents() {
+      try {
+        setLoading(true);
+        const data = await fetchStudents();
+        setStudents(data);
+      } catch (err) {
+        setError(err instanceof Error ? err.message : "Terjadi kesalahan");
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    getStudents();
+  }, []);
+
+  return { students, loading, error };
 }

@@ -11,6 +11,8 @@ interface Student {
   id: string;
   name: string;
   nisn: string;
+  ijazahNumber: string;
+  schoolOrigin: string;
   major: string;
   phone: string;
   status: string;
@@ -29,6 +31,8 @@ export default function StudentTable({ students }: StudentTableProps) {
             <TableHead className="text-xs">No</TableHead>
             <TableHead className="text-xs">Nama</TableHead>
             <TableHead className="text-xs">NISN</TableHead>
+            <TableHead className="text-xs">Nomor Ijazah</TableHead>
+            <TableHead className="w-[200px] text-xs">Asal Sekolah</TableHead>
             <TableHead className="text-xs">Jurusan</TableHead>
             <TableHead className="text-xs">Telepon</TableHead>
             <TableHead className="text-xs">Status Akun</TableHead>
@@ -41,6 +45,8 @@ export default function StudentTable({ students }: StudentTableProps) {
                 <TableCell className="text-xs">{index + 1}</TableCell>
                 <TableCell className="text-xs">{student.name}</TableCell>
                 <TableCell className="text-xs">{student.nisn}</TableCell>
+                <TableCell className="text-xs">{student.ijazahNumber}</TableCell>
+                <TableCell className="text-xs">{student.schoolOrigin}</TableCell>
                 <TableCell className="text-xs">{student.major}</TableCell>
                 <TableCell className="text-xs">{student.phone}</TableCell>
                 <TableCell className="text-xs font-medium uppercase tracking-wider">
@@ -60,7 +66,7 @@ export default function StudentTable({ students }: StudentTableProps) {
             ))
           ) : (
             <TableRow>
-              <TableCell colSpan={6} className="text-center text-gray-500 py-4">
+              <TableCell colSpan={8} className="text-center text-gray-500 py-4">
                 Tidak ada data siswa di tabel.
               </TableCell>
             </TableRow>
@@ -70,3 +76,4 @@ export default function StudentTable({ students }: StudentTableProps) {
     </div>
   );
 }
+

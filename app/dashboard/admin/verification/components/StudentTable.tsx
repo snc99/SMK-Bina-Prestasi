@@ -36,7 +36,6 @@ export default function StudentTable() {
             <TableHead className="w-[200px] text-xs">Asal Sekolah</TableHead>
             <TableHead className="w-[150px] text-xs">Jurusan</TableHead>
             <TableHead className="w-[150px] text-xs">Telepon</TableHead>
-            <TableHead className="w-[150px] text-xs">Status</TableHead>
             <TableHead className="w-[200px] text-xs">Aksi</TableHead>
           </TableRow>
         </TableHeader>
@@ -55,19 +54,6 @@ export default function StudentTable() {
                 </TableCell>
                 <TableCell className="text-xs">{student.major}</TableCell>
                 <TableCell className="text-xs">{student.phone}</TableCell>
-                <TableCell className="text-xs font-medium uppercase tracking-wider">
-                  <div
-                    className={`px-2 py-1 inline-block rounded-sm ${
-                      student.status === "PENDING"
-                        ? "bg-yellow-200 text-yellow-800"
-                        : student.status === "REJECTED"
-                        ? "bg-red-200 text-red-800"
-                        : "bg-green-200 text-green-800"
-                    }`}
-                  >
-                    {student.status}
-                  </div>
-                </TableCell>
                 <TableCell className="text-xs font-medium uppercase tracking-wider">
                   {student.status === "PENDING" && (
                     <div className="flex gap-2">
