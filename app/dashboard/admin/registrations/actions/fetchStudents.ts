@@ -1,13 +1,16 @@
-export async function fetchStudents() {
+export const fetchStudents = async () => {
   try {
-    const response = await fetch("/api/admin/list"); 
+    const response = await fetch("/api/admin/list");
+
     if (!response.ok) {
       throw new Error("Gagal mengambil data siswa");
     }
-    return await response.json();
+
+    const data = await response.json();
+
+    return data; 
   } catch (error) {
-    throw new Error(
-      error instanceof Error ? error.message : "Gagal mengambil data"
-    );
+    console.error("❌ Error fetching students:", error);
+    return [];
   }
-}
+};

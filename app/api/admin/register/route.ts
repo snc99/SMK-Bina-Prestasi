@@ -8,7 +8,6 @@ export async function POST(req: Request) {
   try {
     const body = await req.json();
 
-    // 🛠️ Validasi input dengan Zod
     const parsedData = studentSchema.safeParse(body);
     if (!parsedData.success) {
       return NextResponse.json(
@@ -20,7 +19,6 @@ export async function POST(req: Request) {
     const { name, nisn, ijazahNumber, schoolOrigin, major, phone, password } =
       parsedData.data;
 
-    // 🔍 Cek apakah NISN atau Nomor Ijazah sudah digunakan
     const existingStudent = await prisma.student.findFirst({
       where: { OR: [{ nisn }, { ijazahNumber }] },
     });
@@ -32,10 +30,8 @@ export async function POST(req: Request) {
       );
     }
 
-    // 🔐 Hash password sebelum disimpan
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // ✅ Simpan data siswa
     const newStudent = await prisma.student.create({
       data: {
         name,
@@ -45,8 +41,8 @@ export async function POST(req: Request) {
         major,
         phone,
         password: hashedPassword,
-        status: Status.PENDING, // Gunakan enum dari Prisma
-        selectionResult: StatusSelection.PENDING, // Gunakan enum dari Prisma
+        status: Status.PENDING,
+        selectionResult: StatusSelection.PENDING,
       },
     });
 

@@ -8,6 +8,7 @@ import Loading from "@/components/loading/Loading";
 export default function StudentList() {
   const { students, loading, error } = useStudents();
 
+
   if (error) return <ErrorServer />;
   if (loading) return <Loading />;
 

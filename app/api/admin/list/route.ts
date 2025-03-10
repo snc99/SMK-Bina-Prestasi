@@ -3,7 +3,6 @@ import { prisma } from "@/lib/prisma";
 
 export async function GET() {
   try {
-    // Ambil semua data siswa
     const students = await prisma.student.findMany({
       select: {
         id: true,

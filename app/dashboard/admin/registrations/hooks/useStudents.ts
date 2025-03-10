@@ -1,38 +1,22 @@
-import { useState, useEffect } from "react";
+"use client";
+
+import useSWR from "swr";
 import { fetchStudents } from "../actions/fetchStudents";
 
-// Interface untuk data siswa
-interface Student {
-  id: string;
-  name: string;
-  nisn: string;
-  ijazahNumber: string;
-  schoolOrigin: string;
-  major: string;
-  phone: string;
-  status: string;
-}
-
 export function useStudents() {
-  const [students, setStudents] = useState<Student[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
+  const {
+    data: students,
+    error,
+    isLoading,
+    mutate,
+  } = useSWR("/api/admin/list", fetchStudents, {
+    revalidateOnFocus: false,
+  });
 
-  useEffect(() => {
-    async function getStudents() {
-      try {
-        setLoading(true);
-        const data = await fetchStudents();
-        setStudents(data);
-      } catch (err) {
-        setError(err instanceof Error ? err.message : "Terjadi kesalahan");
-      } finally {
-        setLoading(false);
-      }
-    }
-
-    getStudents();
-  }, []);
-
-  return { students, loading, error };
+  return {
+    students: students || [],
+    loading: isLoading,
+    error,
+    mutate,
+  };
 }

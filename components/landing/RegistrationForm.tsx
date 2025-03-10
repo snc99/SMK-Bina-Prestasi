@@ -8,7 +8,9 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Loader2 } from "lucide-react";
 import { motion } from "framer-motion";
+import { useStudents } from "@/app/dashboard/admin/registrations/hooks/useStudents";
 
+// Skema validasi dengan Zod
 const studentSchema = z.object({
   name: z.string().min(3, "Nama minimal 3 karakter"),
   nisn: z.string().length(10, "NISN harus 10 digit"),
@@ -19,6 +21,7 @@ const studentSchema = z.object({
   password: z.string().min(6, "Password minimal 6 karakter"),
 });
 
+// Tipe data dari form
 type StudentFormData = z.infer<typeof studentSchema>;
 
 export default function RegistrationForm() {
@@ -26,23 +29,33 @@ export default function RegistrationForm() {
     register,
     handleSubmit,
     formState: { errors },
+    reset, // Untuk mereset form setelah submit
   } = useForm<StudentFormData>({
     resolver: zodResolver(studentSchema),
     mode: "onChange",
   });
 
   const [loading, setLoading] = useState(false);
+  const { mutate } = useStudents(); // 🔥 Gunakan mutate untuk update data di halaman admin
 
+  // Fungsi submit form
   const onSubmit: SubmitHandler<StudentFormData> = async (data) => {
     setLoading(true);
     try {
-      const response = await fetch("/api/students/register", {
+      const response = await fetch("/api/admin/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ ...data, status: "PENDING" }),
       });
+
       if (!response.ok) throw new Error("Gagal mendaftar");
+
+      const responseData = await response.json(); // ✅ Ambil respons API
+      console.log("✅ Pendaftaran berhasil:", responseData); // ✅ Log respons API
+
       alert("Pendaftaran berhasil!");
+      reset(); // Reset form setelah berhasil
+      mutate(); // 🔥 Update data di halaman admin tanpa refresh
     } catch (error: any) {
       alert(error.message);
     } finally {
