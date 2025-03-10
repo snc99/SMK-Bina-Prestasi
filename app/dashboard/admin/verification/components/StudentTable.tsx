@@ -25,18 +25,18 @@ export default function StudentTable() {
   if (isError) return <ErrorServer />;
 
   return (
-    <div className="w-full overflow-x-auto">
+    <div className="w-full overflow-x-auto rounded-md shadow-md">
       <Table className="w-full min-w-[1000px]">
         <TableHeader className="bg-gray-100 text-gray-700">
           <TableRow>
-            <TableHead className="w-[50px] text-xs">No</TableHead>
-            <TableHead className="w-[150px] text-xs">Nama</TableHead>
-            <TableHead className="w-[150px] text-xs">NISN</TableHead>
-            <TableHead className="w-[150px] text-xs">Nomor Ijazah</TableHead>
-            <TableHead className="w-[200px] text-xs">Asal Sekolah</TableHead>
-            <TableHead className="w-[150px] text-xs">Jurusan</TableHead>
-            <TableHead className="w-[150px] text-xs">Telepon</TableHead>
-            <TableHead className="w-[200px] text-xs">Aksi</TableHead>
+            <TableHead className="text-xs">No</TableHead>
+            <TableHead className="text-xs">Nama</TableHead>
+            <TableHead className="text-xs">NISN</TableHead>
+            <TableHead className="text-xs">Nomor Ijazah</TableHead>
+            <TableHead className="text-xs">Asal Sekolah</TableHead>
+            <TableHead className="text-xs">Jurusan</TableHead>
+            <TableHead className="text-xs">Telepon</TableHead>
+            <TableHead className="text-xs">Aksi</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>

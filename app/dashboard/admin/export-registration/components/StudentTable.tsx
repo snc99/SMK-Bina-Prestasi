@@ -15,7 +15,7 @@ type Student = {
   ijazahNumber: string;
   major: string;
   phone: string;
-  status: "PENDING" | "VERIFIED" | "REJECTED"; // Sesuai API
+  status: "PENDING" | "VERIFIED" | "REJECTED";
 };
 
 type StudentTableProps = {
@@ -23,7 +23,6 @@ type StudentTableProps = {
 };
 
 export default function StudentTable({ students }: StudentTableProps) {
-  console.log("Students data:", students);
   const statusLabel: Record<Student["status"], string> = {
     PENDING: "Menunggu",
     VERIFIED: "Terverifikasi",

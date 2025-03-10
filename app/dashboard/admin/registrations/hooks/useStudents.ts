@@ -13,7 +13,6 @@ interface Student {
   status: string;
 }
 
-// Custom hook untuk mengambil data siswa
 export function useStudents() {
   const [students, setStudents] = useState<Student[]>([]);
   const [loading, setLoading] = useState<boolean>(true);

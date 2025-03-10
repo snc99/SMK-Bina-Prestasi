@@ -24,7 +24,7 @@ interface StudentTableProps {
 
 export default function StudentTable({ students }: StudentTableProps) {
   return (
-    <div className="w-full overflow-x-auto">
+    <div className="overflow-x-auto rounded-md shadow-md">
       <Table className="w-full min-w-[1000px]">
         <TableHeader className="bg-gray-100 text-gray-700">
           <TableRow>
@@ -45,8 +45,12 @@ export default function StudentTable({ students }: StudentTableProps) {
                 <TableCell className="text-xs">{index + 1}</TableCell>
                 <TableCell className="text-xs">{student.name}</TableCell>
                 <TableCell className="text-xs">{student.nisn}</TableCell>
-                <TableCell className="text-xs">{student.ijazahNumber}</TableCell>
-                <TableCell className="text-xs">{student.schoolOrigin}</TableCell>
+                <TableCell className="text-xs">
+                  {student.ijazahNumber}
+                </TableCell>
+                <TableCell className="text-xs">
+                  {student.schoolOrigin}
+                </TableCell>
                 <TableCell className="text-xs">{student.major}</TableCell>
                 <TableCell className="text-xs">{student.phone}</TableCell>
                 <TableCell className="text-xs font-medium uppercase tracking-wider">
@@ -67,7 +71,7 @@ export default function StudentTable({ students }: StudentTableProps) {
           ) : (
             <TableRow>
               <TableCell colSpan={8} className="text-center text-gray-500 py-4">
-                Tidak ada data siswa di tabel.
+                Belum ada data pendaftaran
               </TableCell>
             </TableRow>
           )}
@@ -76,4 +80,3 @@ export default function StudentTable({ students }: StudentTableProps) {
     </div>
   );
 }
-

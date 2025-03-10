@@ -16,10 +16,16 @@ interface StudentTableProps {
   mutate: KeyedMutator<any>;
 }
 
-
 export default function StudentTable({ students, mutate }: StudentTableProps) {
+  // Filter hanya yang berstatus "PENDING" atau "BELUM DITENTUKAN"
+  const pendingStudents = students.filter(
+    (student) =>
+      student.selectionResult === "PENDING" ||
+      student.selectionResult === "BELUM DITENTUKAN"
+  );
+
   return (
-    <div className="w-full overflow-x-auto">
+    <div className="overflow-x-auto rounded-md shadow-md">
       <Table className="w-full min-w-[1000px]">
         <TableHeader className="bg-gray-100 text-gray-700">
           <TableRow>
@@ -31,22 +37,25 @@ export default function StudentTable({ students, mutate }: StudentTableProps) {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {students.map((student, index) => (
-            <TableRow key={student.id}>
-              <TableCell className="text-xs">{index + 1}</TableCell>
-              <TableCell className="text-xs">{student.name}</TableCell>
-              <TableCell className="text-xs">{student.nisn}</TableCell>
-              <TableCell className="text-xs">{student.major}</TableCell>
-              <TableCell className="text-xs text-center">
-                {student.selectionResult === "PENDING" ||
-                student.selectionResult === "BELUM DITENTUKAN" ? (
+          {pendingStudents.length > 0 ? (
+            pendingStudents.map((student, index) => (
+              <TableRow key={student.id}>
+                <TableCell className="text-xs">{index + 1}</TableCell>
+                <TableCell className="text-xs">{student.name}</TableCell>
+                <TableCell className="text-xs">{student.nisn}</TableCell>
+                <TableCell className="text-xs">{student.major}</TableCell>
+                <TableCell className="text-xs text-center">
                   <SelectionButton studentId={student.id} mutate={mutate} />
-                ) : (
-                  <p className="text-red-500">Bukan Pending</p>
-                )}
+                </TableCell>
+              </TableRow>
+            ))
+          ) : (
+            <TableRow>
+              <TableCell colSpan={5} className="text-center text-sm text-gray-500 py-4">
+                Tidak ada data yang perlu diverifikasi.
               </TableCell>
             </TableRow>
-          ))}
+          )}
         </TableBody>
       </Table>
     </div>

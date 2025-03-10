@@ -1,4 +1,3 @@
-// StudentList.tsx
 "use client";
 
 import Loading from "@/components/loading/Loading";
@@ -19,22 +18,18 @@ export default function StudentList() {
     isError,
   } = useStudents();
 
-  // Gabungkan semua data siswa
   const students = [...passedStudents, ...failedStudents, ...pendingStudents];
 
-  // Fungsi untuk export PDF
   const generatePDF = () => {
     const doc = new jsPDF("p", "mm", "a4");
     doc.setFont("helvetica");
     doc.setFontSize(14);
     doc.text("Data Pendaftaran Siswa", 105, 15, { align: "center" });
 
-    // Header tabel
     const headers = [
       ["No", "Nama", "NISN", "Nomor Ijazah", "Jurusan", "Telepon", "Status"],
     ];
 
-    // Data siswa dalam format array
     const data = students.map((student: any, index: number) => [
       index + 1,
       student.name,
@@ -49,27 +44,25 @@ export default function StudentList() {
         : "Menunggu",
     ]);
 
-    // Gunakan autoTable dengan doc
     autoTable(doc, {
       head: headers,
       body: data,
-      startY: 25, // Memastikan tabel tidak menimpa judul
+      startY: 25,
       styles: { fontSize: 8, cellPadding: 2 },
       columnStyles: {
-        0: { cellWidth: 10 }, // No
-        1: { cellWidth: 35 }, // Nama
-        2: { cellWidth: 30 }, // NISN
-        3: { cellWidth: 30 }, // Nomor Ijazah
-        4: { cellWidth: 30 }, // Jurusan
-        5: { cellWidth: 30 }, // Telepon
-        6: { cellWidth: 25 }, // Status
+        0: { cellWidth: 10 },
+        1: { cellWidth: 35 },
+        2: { cellWidth: 30 },
+        3: { cellWidth: 30 },
+        4: { cellWidth: 30 },
+        5: { cellWidth: 30 },
+        6: { cellWidth: 25 },
       },
     });
 
     doc.save("laporan_data_pendaftaran_siswa.pdf");
   };
 
-  // Fungsi untuk export Excel
   const generateExcel = () => {
     const worksheet = XLSX.utils.json_to_sheet(
       students.map((student: any, index: number) => ({

@@ -14,6 +14,6 @@ export async function getStudents() {
     return await res.json();
   } catch (error) {
     console.error("Error fetching students:", error);
-    return { students: [] };
+    throw error;
   }
 }
