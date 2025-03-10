@@ -1,11 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
-import { prisma } from "@/lib/prisma"; // Import Prisma
+import { prisma } from "@/lib/prisma";
 
-// GET: Ambil data siswa yang belum diverifikasi
 export async function GET() {
   try {
     const students = await prisma.student.findMany({
-      where: { selectionResult: "PENDING" }, // Ambil siswa yang belum diverifikasi
+      where: { selectionResult: "PENDING" },
       select: {
         id: true,
         name: true,
@@ -13,7 +12,7 @@ export async function GET() {
         major: true,
         selectionResult: true,
       },
-      orderBy: { name: "asc" },
+      orderBy: { createdAt: "asc" },
     });
 
     return NextResponse.json({ students }, { status: 200 });

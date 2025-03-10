@@ -3,21 +3,17 @@ import { prisma } from "@/lib/prisma";
 
 export async function GET() {
   try {
-    const students = await prisma.student.findMany({
-      select: {
-        id: true,
-        name: true,
-        nisn: true,
-        ijazahNumber: true,
-        schoolOrigin: true,
-        major: true,
-        phone: true,
-        status: true,
-        selectionResult: true,
-        createdAt: true,
-      },
-      orderBy: { createdAt: "desc" }, // Urutkan dari terbaru
-    });
+    const students = await prisma.$queryRaw`
+      SELECT * FROM "Student"
+      ORDER BY 
+        CASE 
+          WHEN status = 'PENDING' THEN 1
+          WHEN status = 'REJECTED' THEN 2
+          WHEN status = 'VERIFIED' THEN 3
+          ELSE 4
+        END,
+        "createdAt" DESC
+    `;
 
     return NextResponse.json(students, { status: 200 });
   } catch (error) {

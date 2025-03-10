@@ -32,11 +32,10 @@ datasource db {
     selection     Selection?
   }
 
-
   enum Status {
     PENDING   // Baru mendaftar
-    VERIFIED  // Data sudah diverifikasi admin
     REJECTED  // Data ditolak (misal NISN/Ijazah tidak valid)
+    VERIFIED  // Data sudah diverifikasi admin
     PASSED    // Lulus seleksi
     FAILED    // Tidak lulus seleksi
   }
