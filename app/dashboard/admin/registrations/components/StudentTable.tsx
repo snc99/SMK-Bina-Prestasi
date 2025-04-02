@@ -1,3 +1,4 @@
+import Loading from "@/components/loading/Loading";
 import {
   Table,
   TableBody,
@@ -20,9 +21,14 @@ interface Student {
 
 interface StudentTableProps {
   students: Student[];
+  mutate: () => void;
+  emptyMessage?: string;
 }
 
-export default function StudentTable({ students }: StudentTableProps) {
+export default function StudentTable({
+  students = [],
+  emptyMessage = "Belum ada data pendaftaran",
+}: StudentTableProps) {
   return (
     <div className="overflow-x-auto rounded-md shadow-md">
       <Table className="w-full min-w-[1000px]">
@@ -39,7 +45,7 @@ export default function StudentTable({ students }: StudentTableProps) {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {students.length > 0 ? (
+           {students.length > 0 ? (
             students.map((student, index) => (
               <TableRow key={student.id}>
                 <TableCell className="text-xs">{index + 1}</TableCell>
@@ -71,7 +77,7 @@ export default function StudentTable({ students }: StudentTableProps) {
           ) : (
             <TableRow>
               <TableCell colSpan={8} className="text-center text-gray-500 py-4">
-                Belum ada data pendaftaran
+                {emptyMessage}
               </TableCell>
             </TableRow>
           )}

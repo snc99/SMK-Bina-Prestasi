@@ -11,13 +11,25 @@ import {
 import SelectionButton from "./SelectionButton";
 import { KeyedMutator } from "swr";
 
-interface StudentTableProps {
-  students: any[];
-  mutate: KeyedMutator<any>;
+interface Student {
+  id: string;
+  name: string;
+  nisn: string;
+  major: string;
+  selectionResult: string;
 }
 
-export default function StudentTable({ students, mutate }: StudentTableProps) {
-  // Filter hanya yang berstatus "PENDING" atau "BELUM DITENTUKAN"
+interface StudentTableProps {
+  students?: Student[];
+  mutate: KeyedMutator<any>;
+  emptyMessage?: string;
+}
+
+export default function StudentTable({
+  students = [],
+  emptyMessage = "Tidak ada data yang perlu diverifikasi.",
+  mutate,
+}: StudentTableProps) {
   const pendingStudents = students.filter(
     (student) =>
       student.selectionResult === "PENDING" ||
@@ -51,8 +63,11 @@ export default function StudentTable({ students, mutate }: StudentTableProps) {
             ))
           ) : (
             <TableRow>
-              <TableCell colSpan={5} className="text-center text-sm text-gray-500 py-4">
-                Tidak ada data yang perlu diverifikasi.
+              <TableCell
+                colSpan={5}
+                className="text-center text-sm text-gray-500 py-4"
+              >
+                {emptyMessage}
               </TableCell>
             </TableRow>
           )}

@@ -1,11 +1,8 @@
-export async function getStudents() {
+export async function getStudents(url: string) {
   try {
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/admin/students-result`,
-      {
-        cache: "no-store",
-      }
-    );
+    const res = await fetch(url, {
+      cache: "no-store",
+    });
 
     if (!res.ok) {
       throw new Error("Gagal mengambil data pendaftar.");

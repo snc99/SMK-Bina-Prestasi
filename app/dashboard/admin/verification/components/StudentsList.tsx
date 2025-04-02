@@ -1,13 +1,13 @@
 "use client";
 
-import { useStudents } from "../hooks/useStudents";
 import { useState, useEffect } from "react";
-import SearchInput from "./SearchInput";
+import { useUnverifiedStudents } from "../hooks/useUnverifiedStudents";
+import { useStudentSearch } from "../hooks/useStudentsSearch";
 import StudentTable from "./StudentTable";
 import ErrorServer from "@/components/error-handling/ErrorServer";
 import Loading from "@/components/loading/Loading";
+import SearchInput from "../components/SearchInput";
 import { useSearchParams, useRouter } from "next/navigation";
-import { useStudentSearch } from "../hooks/useStudentSearch";
 import Pagination from "./Pagination";
 
 export default function StudentList() {
@@ -21,15 +21,15 @@ export default function StudentList() {
     totalPages: allTotalPages,
     isLoading: allLoading,
     isError: allError,
-    mutate: allMutate,
-  } = useStudents(page, limit);
+    mutate: allMutate, // Ambil mutate dari useUnverifiedStudents
+  } = useUnverifiedStudents(page, limit);
 
   const {
     students: searchResults,
     totalPages: searchTotalPages,
     loading: searchLoading,
     error: searchError,
-    mutate: searchMutate,
+    mutate: searchMutate, // Ambil mutate dari useStudentSearch
   } = useStudentSearch(searchQuery, page, limit);
 
   const currentStudents = searchQuery ? searchResults : allStudents;
@@ -38,15 +38,17 @@ export default function StudentList() {
 
   const emptyMessage = searchQuery
     ? "Tidak ada data yang ditemukan."
-    : "Tidak ada data yang perlu diverifikasi.";
+    : "Belum ada data pendaftaran.";
 
+  // Perbarui URL saat page atau searchQuery berubah
   useEffect(() => {
-    const newUrl = `/dashboard/admin/selection-status?${
+    const url = `/dashboard/admin/verification?${
       searchQuery ? `search=${searchQuery}&` : ""
     }page=${page}`;
-    router.push(newUrl);
+    router.push(url);
   }, [page, searchQuery, router]);
 
+  // Reset halaman ke 1 saat searchQuery berubah
   useEffect(() => {
     setPage(1);
   }, [searchQuery]);
@@ -56,14 +58,14 @@ export default function StudentList() {
 
   return (
     <div>
-      <SearchInput placeholder="Cari Nama, NISN, atau No Ijazah" />{" "}
+      <SearchInput placeholder="Cari Nama, NISN, atau No Ijazah" />
       {searchLoading ? (
         <Loading />
       ) : (
         <StudentTable
           students={currentStudents}
           emptyMessage={emptyMessage}
-          mutate={searchQuery ? searchMutate : allMutate}
+          mutate={searchQuery ? searchMutate : allMutate} // Teruskan mutate yang sesuai
         />
       )}
       {totalPages > 1 && (

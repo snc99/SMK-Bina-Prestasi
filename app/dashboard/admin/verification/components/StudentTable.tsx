@@ -8,22 +8,31 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { useUnverifiedStudents } from "../hooks/fetchUnverified";
 import VerificationButton from "./VerificationButton";
-import Loading from "@/components/loading/Loading";
-import ErrorServer from "@/components/error-handling/ErrorServer";
+import { verifyStudent } from "../actions/verifyStudent";
+import { rejectStudent } from "../actions/rejectStudent";
 
-interface VerificationButtonProps {
+interface Student {
   id: string;
-  action: "verify" | "reject";
+  name: string;
+  nisn: string;
+  ijazahNumber: string;
+  schoolOrigin: string;
+  major: string;
+  phone: string;
+  status: string;
 }
 
-export default function StudentTable() {
-  const { students, isLoading, isError } = useUnverifiedStudents();
+interface StudentTableProps {
+  students?: Student[];
+  mutate: () => void;
+  emptyMessage?: string; 
+}
 
-  if (isLoading) return <Loading />;
-  if (isError) return <ErrorServer />;
-
+export default function StudentTable({
+  students = [],
+  emptyMessage = "Belum ada data pendaftaran", 
+}: StudentTableProps) {
   return (
     <div className="w-full overflow-x-auto rounded-md shadow-md">
       <Table className="w-full min-w-[1000px]">
@@ -57,8 +66,16 @@ export default function StudentTable() {
                 <TableCell className="text-xs font-medium uppercase tracking-wider">
                   {student.status === "PENDING" && (
                     <div className="flex gap-2">
-                      <VerificationButton id={student.id} action="verify" />
-                      <VerificationButton id={student.id} action="reject" />
+                      <VerificationButton
+                        action="verify"
+                        onClick={() => verifyStudent(student.id)}
+                        id={student.id}
+                      />
+                      <VerificationButton
+                        action="reject"
+                        onClick={() => rejectStudent(student.id)}
+                        id={student.id}
+                      />
                     </div>
                   )}
                 </TableCell>
@@ -67,7 +84,7 @@ export default function StudentTable() {
           ) : (
             <TableRow>
               <TableCell colSpan={9} className="text-center text-gray-500">
-                Belum ada pendaftar
+                {emptyMessage} 
               </TableCell>
             </TableRow>
           )}

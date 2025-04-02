@@ -1,13 +1,11 @@
 import useSWR from "swr";
 import { fetchStudents } from "../actions/fetchStudents";
 
-export function useStudents(
-  page: number = 1,
-  limit: number = 10,
-  search: string = ""
-) {
+export function useStudentSearch(search: string, page: number, limit: number) {
   const { data, error, isLoading, mutate } = useSWR(
-    `/api/admin/registrations?page=${page}&limit=${limit}`,
+    `/api/admin/registrations?search=${encodeURIComponent(
+      search
+    )}&page=${page}&limit=${limit}`,
     fetchStudents,
     {
       revalidateOnFocus: false,

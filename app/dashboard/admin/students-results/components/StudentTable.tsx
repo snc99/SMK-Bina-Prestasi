@@ -9,12 +9,25 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
-interface StudentTableProps {
-  students: any[];
+interface Student {
+  id: string;
+  name: string;
+  nisn: string;
+  major: string;
+  phone: string;
+  selectionResult: string;
 }
 
-export default function StudentTable({ students = [] }: StudentTableProps) {
+interface StudentTableProps {
+  students?: Student[];
+  mutate: () => void;
+  emptyMessage?: string;
+}
 
+export default function StudentTable({
+  students = [],
+  emptyMessage = "Belum ada data pendaftaran",
+}: StudentTableProps) {
   return (
     <div className="overflow-x-auto rounded-md shadow-md">
       <Table className="w-full min-w-[1000px]">
@@ -62,7 +75,7 @@ export default function StudentTable({ students = [] }: StudentTableProps) {
                 colSpan={6}
                 className="text-center text-sm text-gray-500 py-4"
               >
-                Tidak ada data siswa.
+                {emptyMessage}
               </TableCell>
             </TableRow>
           )}
