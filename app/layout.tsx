@@ -8,10 +8,10 @@ import { Poppins } from 'next/font/google';
 
 
 const poppins = Poppins({
-  subsets: ['latin'], // Sesuaikan subset jika perlu
-  weight: ['400', '700'], // Tambahkan varian font yang dibutuhkan
-  style: ['normal', 'italic'], // (Opsional) Kalau butuh italic juga
-  display: 'swap', // Supaya font langsung ditampilkan saat loading
+  subsets: ['latin'], 
+  weight: ['400', '700'], 
+  style: ['normal', 'italic'], 
+  display: 'swap', 
 });
 
 const geistSans = Geist({
